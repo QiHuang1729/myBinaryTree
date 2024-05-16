@@ -1,0 +1,20 @@
+Pseudocode for add(E value) 
+
+// save the root to a temporary TreeNode<E> variable
+// If the root is null, just add a new TreeNode<E> with value.
+// If the root is not null, compare value to the value of the root
+// Check the appropriate side of the tree. If, say, the left
+// side of the tree is null, then save the TreeNode<E> to the
+// left side. If it's not null, then save the left node as 
+// the temporary node and compare again. 
+
+// save current node
+// save next node
+// if currentNode is null, it's the head. Save the value to the head
+// if currentNode is not null, do a comparison and set nextNode 
+// based on whether the method returns a value less than zero
+// or a value greater than zero.
+// if nextNode is not null, set it as currentNode. Loop with 
+// two previous steps
+// if nextNode is null, set it to the ListNode<E> value using current node
+// outside of the loop
