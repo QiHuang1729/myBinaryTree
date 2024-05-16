@@ -20,45 +20,96 @@ public class BinaryTree<E extends Comparable<E>> {
 	
 	/**	Add a node to the tree
 	 *	@param value		the value to put into the tree
-	 */
+	 *
 	public void add(E value) 
 	{
-		// save the root to a temporary TreeNode<E> variable
-		// If the root is null, just add a new TreeNode<E> with value.
-		// If the root is not null, compare value to the value of the root
-		// Check the appropriate side of the tree. If, say, the left
-		// side of the tree is null, then save the TreeNode<E> to the
-		// left side. If it's not null, then save the left node as 
-		// the temporary node and compare again. 
-		
-		// save current node
-		// save next node
-		// if currentNode is null, it's the head. Save the value to the head
-		// if currentNode is not null, do a comparison and set nextNode 
-		// based on whether the method returns a value less than zero
-		// or a value greater than zero.
-		// if nextNode is not null, set it as currentNode. Loop with 
-		// two previous steps
-		// if nextNode is null, set it to the ListNode<E> value using current node
-		// outside of the loop
-		
-		TreeNode<E> currentNode = head;
+		TreeNode<E> currentNode = root;
 		TreeNode<E> nextNode = null;
+		E currentValue = null;
 		
 		if (currentNode == null) {
 			root = new TreeNode<E>(value);
 		} else {
+			// find the nextNode
+			currentValue = currentNode.getValue();
+			if (value.compareTo(currentValue) < 0) {
+				nextNode = currentNode.getLeft();
+			} else {
+				nextNode = currentNode.getRight();
+			}
+			
+			// if nextNode is not null, continue moving nextNode up to 
+			// currentNode and setting the appropriate next node from 
+			// currentNode to nextNode
 			while (nextNode != null) {
-				
+				currentNode = nextNode;
+				currentValue = currentNode.getValue();
+				if (value.compareTo(currentValue) < 0) {
+					nextNode = currentNode.getLeft();
+				} else {
+					nextNode = currentNode.getRight();
+				}
+			}
+			
+			// if nextNode is equal to null, set the appropriate pointer
+			// in the currentNode to the input value, which we store 
+			// in nextNode.
+			nextNode = new TreeNode<E>(value);
+			if (value.compareTo(currentValue) < 0) {
+				currentNode.setLeft(nextNode);
+			} else {
+				// if value is "equal" to the currentValue, it's set 
+				// to the right, but that doesn't appear in this problem
+				currentNode.setRight(nextNode);
 			}
 		}
-		
+	} */
+	
+	/**	Recusively add a node to the tree
+	 *	@param value		the value to put into the tree
+	 */
+	public void add(E value) {
+		if (root == null) {
+			root = new TreeNode<E>(value);
+		} else {
+			recursiveAdd(value, root);
+		}
+	}
+	
+	/**	Recusively add a node to the tree
+	 *	@param value		the value to put into the tree
+	 *  @param node			the part of the tree the value will be in
+	 */
+	/** Test thoroughly if time lol */
+	private void recursiveAdd(E value, TreeNode<E> node) {
+		TreeNode<E> nextNode = null;
+		TreeNode<E> valueNode = null;
+				
+		if (value.compareTo(node.getValue()) < 0) {
+			nextNode = node.getLeft();
+			if (nextNode == null) {
+				valueNode = new TreeNode<E>(value);
+				node.setLeft(valueNode);
+			} else {
+				recursiveAdd(value, nextNode);
+			}
+		} else {
+			nextNode = node.getRight();
+			if (nextNode == null) {
+				valueNode = new TreeNode<E>(value);
+				node.setRight(valueNode);
+			} else {
+				recursiveAdd(value, nextNode);
+			}
+		}
 	}
 	
 	/**
 	 *	Print Binary Tree Inorder
 	 */
-	public void printInorder() { }
+	public void printInorder() {
+		
+	}
 	
 	/**
 	 *	Print Binary Tree Preorder
