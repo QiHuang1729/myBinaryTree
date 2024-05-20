@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  *	Binary Tree of Comparable values.
  *	The tree only has unique values. It does not add duplicate values.
@@ -108,26 +110,92 @@ public class BinaryTree<E extends Comparable<E>> {
 	 *	Print Binary Tree Inorder
 	 */
 	public void printInorder() {
-		
+		ArrayList<E> inOrder = new ArrayList<E>();
+		storeInorder(inOrder, root);
+		for (int i = 0; i < inOrder.size(); i++) {
+			System.out.print(inOrder.get(i) + " ");
+		}
+	}
+	
+	/** 
+	 * Print inorder a Binary Subtree starting from "node"
+	 * @param node The node where the subtree begins
+	 */
+	private void storeInorder(ArrayList<E> inOrder, TreeNode<E> node) {
+		if (node.getLeft() != null) {
+			storeInorder(inOrder, node.getLeft());
+		}
+		inOrder.add(node.getValue());
+		if (node.getRight() != null) {
+			storeInorder(inOrder, node.getRight());
+		}
 	}
 	
 	/**
 	 *	Print Binary Tree Preorder
 	 */
-	public void printPreorder() { }
+	public void printPreorder() { 
+		printPreorder(root);
+	}
+	
+	/** 
+	 * Print inorder a Binary Subtree starting from "node"
+	 * @param node The node where the subtree begins
+	 */
+	private void printPreorder(TreeNode<E> node) {
+		System.out.print(node.getValue() + " ");
+		if (node.getLeft() != null) {
+			printPreorder(node.getLeft());
+		}
+		if (node.getRight() != null) {
+			printPreorder(node.getRight());
+		}
+	}
 	
 	/**
 	 *	Print Binary Tree Postorder
 	 */
-	public void printPostorder() { }
-		
+	public void printPostorder() { 
+		printPostorder(root);
+	}
+	
+	/** 
+	 * Print inorder a Binary Subtree starting from "node"
+	 * @param node The node where the subtree begins
+	 */
+	private void printPostorder(TreeNode<E> node) {
+		if (node.getLeft() != null) {
+			printPostorder(node.getLeft());
+		}
+		if (node.getRight() != null) {
+			printPostorder(node.getRight());
+		}
+		System.out.print(node.getValue() + " ");
+	}
+	
 	/**	Return a balanced version of this binary tree
 	 *	@return		the balanced tree
 	 */
 	public BinaryTree<E> makeBalancedTree() {
 		BinaryTree<E> balancedTree = new BinaryTree<E>();
-
+		
+		ArrayList<E> inorder = new ArrayList<E>();
+		storeInorder(inorder, root);
+		balancedTree.root = makeBalancedNode(inorder, 0, inorder.size() - 1);
+		
 		return balancedTree;
+	}
+	
+	private TreeNode<E> makeBalancedNode(ArrayList<E> inorder, int low, int high) {
+		if (low > high) return null;
+		int mid = (low + high) / 2;
+		TreeNode<E> theNode = new TreeNode<E>(inorder.get(mid));
+		TreeNode<E> leftNode = makeBalancedNode(inorder, low, mid - 1);
+		TreeNode<E> rightNode = makeBalancedNode(inorder, mid + 1, high);
+		theNode.setLeft(leftNode);
+		theNode.setRight(rightNode);
+		
+		return theNode;
 	}
 	
 	/**
