@@ -206,14 +206,38 @@ public class BinaryTree<E extends Comparable<E>> {
 	public void remove(E value) {
 		root = remove(root, value);
 	}
+	
 	/**
 	 *	Remove value from Binary Tree
 	 *	@param node			the root of the subtree
 	 *	@param value		the value to remove from the subtree
 	 *	@return				TreeNode that connects to parent
 	 */
-	public TreeNode<E> remove(TreeNode<E> node, E value) {
-		return null;
+	public TreeNode<E> remove(TreeNode<E> node, E value) {		
+		TreeNode<E> nodeChild = null; // used when "node" is not removed
+		TreeNode<E> nextNode = null; // used for right subtree case
+		
+		if (value.compareTo(node.getValue()) != 0) {
+			if (value.compareTo(node.getValue()) < 0) {
+				nodeChild = remove(node.getLeft(), value);
+				node.setLeft(nodeChild);
+			} else {
+				nodeChild = remove(node.getRight(), value);
+				node.setRight(nodeChild);
+			}
+			return node;
+		} else {
+			if (node == null) {
+				// removes the root
+			}
+			if (node.getLeft() == null && node.getRight() == null) {
+				return null;
+			} else if (node.getRight() == null) {
+				return node.getLeft();
+			} else {
+				
+			}
+		}
 	}
 	
 
