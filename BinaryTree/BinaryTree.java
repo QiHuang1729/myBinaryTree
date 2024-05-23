@@ -215,7 +215,6 @@ public class BinaryTree<E extends Comparable<E>> {
 	 */
 	public TreeNode<E> remove(TreeNode<E> node, E value) {		
 		TreeNode<E> nodeChild = null; // used when "node" is not removed
-		TreeNode<E> nextNode = null; // used for right subtree case
 		
 		if (value.compareTo(node.getValue()) != 0) {
 			if (value.compareTo(node.getValue()) < 0) {
@@ -227,15 +226,34 @@ public class BinaryTree<E extends Comparable<E>> {
 			}
 			return node;
 		} else {
-			if (node == null) {
-				// removes the root
-			}
 			if (node.getLeft() == null && node.getRight() == null) {
 				return null;
 			} else if (node.getRight() == null) {
 				return node.getLeft();
 			} else {
+				// iterate until secondNode/bottom node has no left
+				TreeNode<E> firstNode = node;
+				TreeNode<E> secondNode = node.getRight();
 				
+				while (secondNode.getLeft() != null) {
+					firstNode = secondNode;
+					secondNode = secondNode.getLeft();
+				}
+				
+				// remove secondNode from the tree and connect the 
+				// appropriate replacement to firstNode
+				if (firstNode == node) {
+					firstNode.setRight(remove(secondNode, secondNode.getValue()));
+				} else {
+					firstNode.setLeft(remove(secondNode, secondNode.getValue()));
+				}
+				
+				// secondNode is the appropriate replacement for removing "node".
+				// connect it to the left and right subtree of "node"
+				secondNode.setLeft(node.getLeft());
+				secondNode.setRight(node.getRight());
+
+				return secondNode;
 			}
 		}
 	}
